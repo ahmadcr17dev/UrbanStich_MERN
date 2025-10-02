@@ -13,10 +13,12 @@ connectDB();
 
 app.use(cors());
 app.use(express.json());
+
+// ✅ In CommonJS, __dirname is available by default
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/auth", authroute);
 app.use("/api/product", productroute);
-app.use('/api/payment', paymentroute);
+app.use("/api/payment", paymentroute);
 
 app.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));
