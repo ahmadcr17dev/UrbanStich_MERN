@@ -116,7 +116,7 @@ const PopularProducts = () => {
     };
 
     return (
-        <section className="mt-20 px-4 sm:px-6 md:px-10 lg:px-12 2xl:px-20">
+        <section className="mt-[150px] px-4 sm:px-6 md:px-10 lg:px-12 2xl:px-20">
             {/* Heading */}
             <h2 className="font-poppins text-center text-xl sm:text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl font-semibold text-gray-800">
                 Popular Products

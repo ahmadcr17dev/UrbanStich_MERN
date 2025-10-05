@@ -17,6 +17,8 @@ import Wishlist from "./components/Wishlist";
 import Checkout from "./components/Checkout";
 import OrderSuccess from "./components/OrderSuccess";
 import PageNotFound from "./components/PageNotFound";
+import Testimonials from "./components/Testimonials";
+import About from "./components/About";
 
 const AppContent = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -84,6 +86,8 @@ const AppContent = () => {
       <HeroSection />
       <PopularProducts />
       <Services />
+      <Testimonials />
+      <About />
       <Footer />
     </>
   );
