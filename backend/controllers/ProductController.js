@@ -3,36 +3,50 @@ const fs = require("fs");
 
 const AddProduct = async (req, res) => {
   try {
-    const { productid, name, category, subcategory, description, brand, discount, variations } = req.body;
+    const {
+      productid,
+      name,
+      category,
+      subcategory,
+      description,
+      brand,
+      discount,
+      variations,
+    } = req.body;
 
-    // search if product already exist or not
-    const existedproduct = await productSchema.findOne({ productid });
-    if (existedproduct) {
-      return res.status(400).json({ message: "Product ID Already Existed" });
+    // Check if product already exists
+    const existedProduct = await productSchema.findOne({ productid });
+    if (existedProduct) {
+      return res.status(400).json({ message: "Product ID Already Exists" });
     }
 
-    const parsedVariations = JSON.parse(variations); // parse JSON
+    // Parse variations JSON
+    const parsedVariations = JSON.parse(variations);
 
-    // Map uploaded files dynamically
+    // ✅ Use Cloudinary URLs instead of local filenames
     if (req.files && req.files.length > 0) {
-      req.files.forEach(file => {
-        // filename format: variation_<idx>_mainImage or variation_<idx>_gallery
+      req.files.forEach((file) => {
+        // Expect fieldname like: variation_0_mainImage or variation_0_gallery
         const match = file.fieldname.match(/variation_(\d+)_(mainImage|gallery)/);
         if (match) {
           const idx = Number(match[1]);
           const type = match[2]; // mainImage or gallery
+
           if (!parsedVariations[idx]) return;
 
           if (type === "mainImage") {
-            parsedVariations[idx].mainImage = file.filename;
+            // ✅ Use Cloudinary URL (req.file.path)
+            parsedVariations[idx].mainImage = file.path;
           } else {
-            if (!parsedVariations[idx].galleryImages) parsedVariations[idx].galleryImages = [];
-            parsedVariations[idx].galleryImages.push(file.filename);
+            if (!parsedVariations[idx].galleryImages)
+              parsedVariations[idx].galleryImages = [];
+            parsedVariations[idx].galleryImages.push(file.path);
           }
         }
       });
     }
 
+    // Create product
     const newProduct = new productSchema({
       productid,
       name,
@@ -45,8 +59,11 @@ const AddProduct = async (req, res) => {
     });
 
     await newProduct.save();
-    res.status(201).json({ message: "Product added successfully", product: newProduct });
 
+    res.status(201).json({
+      message: "✅ Product added successfully",
+      product: newProduct,
+    });
   } catch (err) {
     console.error("AddProduct Error:", err);
     res.status(500).json({ message: err.message });

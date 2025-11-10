@@ -1,10 +1,22 @@
 const express = require("express");
-const upload = require("../config/multer");
-const router = express.Router();   // ✅ use Router
-const { AddProduct, DisplayProduct, DeleteProduct, GetSingleProduct, GetRelatedProducts, UpdateProduct } = require("../controllers/ProductController");
+const upload = require("../config/multer"); // Cloudinary multer config
+const router = express.Router();
 
+const {
+    AddProduct,
+    DisplayProduct,
+    DeleteProduct,
+    GetSingleProduct,
+    GetRelatedProducts,
+    UpdateProduct,
+} = require("../controllers/ProductController");
+
+// Routes
 router.get("/products/related", GetRelatedProducts);
-router.post("/products", upload, AddProduct);
+
+// ✅ Use `.single('image')` or `.array('images')` depending on how you upload
+router.post("/products", upload.any("image"), AddProduct);
+
 router.get("/displayproducts", DisplayProduct);
 router.delete("/:id", DeleteProduct);
 router.get("/products/:id", GetSingleProduct);

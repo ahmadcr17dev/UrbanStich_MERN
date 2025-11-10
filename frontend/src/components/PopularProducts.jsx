@@ -154,7 +154,7 @@ const PopularProducts = () => {
                                     {/* Product Image */}
                                     <div className="w-full h-44 sm:h-56 md:h-64 lg:h-56 bg-gray-100">
                                         <img
-                                            src={`http://localhost:8080/uploads/${mainImage}`}
+                                            src={mainImage.startsWith("http") ? mainImage : `${import.meta.env.VITE_API_BASE}/uploads/${mainImage}`}
                                             alt={p.name}
                                             className="w-full h-full object-cover"
                                         />
