@@ -335,7 +335,9 @@ const Shop = () => {
                                 {products.map((p) => {
                                     const firstVariation = p.variations && p.variations.length > 0 ? p.variations[0] : null;
                                     const imageUrl = firstVariation?.mainImage
-                                        ? `http://localhost:8080/uploads/${firstVariation.mainImage}`
+                                        ? firstVariation.mainImage.startsWith("http")
+                                            ? firstVariation.mainImage
+                                            : `${import.meta.env.VITE_API_BASE}/uploads/${firstVariation.mainImage}`
                                         : "/placeholder.png";
                                     const price = firstVariation?.price || 0;
 
